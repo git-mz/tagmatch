@@ -15,6 +15,8 @@ class Main
      */
     private static $_instance = null;
 
+    protected $wordData = null;
+
     /**
      * 获取单例
      *
@@ -28,6 +30,18 @@ class Main
         return self::$_instance;
     }
 
+    public function setTree($words = [])
+    {
+        $res = [];
+        $res = array_map(function ($val) {
+            $val['len'] = mb_strlen($val['word']);
+            return $val;
+        }, $words);
+        array_multisort(array_column($res, 'len'), SORT_DESC, $res);
+        $this->wordData = $res;
+        return $this;
+    }
+
     /**
      * 检测文本中的标签
      *
@@ -37,8 +51,20 @@ class Main
      */
     public function getTagWord($content, $wordNum = 0)
     {
-        array_multisort(array_column($tagWordList, 'len'), SORT_DESC, $tagWordList);
-        return $tagWordList;
+        $res   = [];
+        $words = $this->wordData;
+        foreach ($words as $key => $value) {
+            $tag     = $value['word'];
+            $replace = implode('-???-', preg_split('/(?<!^)(?!$)/u', $tag));
+
+            $pos = strpos($content, $tag);
+            if ($pos === false) {
+                continue;
+            }
+            $content = substr_replace($content, $replace, $pos, strlen($tag));
+            $res[]   = $value;
+        }
+        return $res;
     }
 
     /**
@@ -52,6 +78,13 @@ class Main
      */
     public function replace($content, $newclass = '', $replaceOne = 0)
     {
+        $words = $this->wordData;
+        foreach ($words as $key => $value) {
+            $tag     = $value['word'];
+            $tmp     = implode('-???-', preg_split('/(?<!^)(?!$)/u', $tag));
+            $replace = '<a href="' . $value['url'] . '" ' . $newclass . '>' . $tmp . '</a>';
+            $content = $this->str_replace_once($content, $tag, $replace);
+        }
         $content = str_replace('-???-', '', $content);
         return $content;
     }
