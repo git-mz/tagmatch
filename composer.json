@@ -1,5 +1,5 @@
 {
-    "name": "git-mz/tkmatch",
+    "name": "git-mz/tagmatch",
     "authors": [
         {
             "name": "git-mz",
@@ -8,8 +8,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "tkmatch\\": "src/tkmatch",
-            "tkmatch\\util\\": "src/tkmatch/util"
+            "tagmatch\\": "src/tagmatch"
         }
     }
 }
