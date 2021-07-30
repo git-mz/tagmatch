@@ -1,12 +1,9 @@
-# tkmatch
->文本关键词匹配程序，主要采用DFA算法实现。
-
-### DFA算法
->DFA 即 Deterministic Finite Automaton，也就是确定有穷自动机，它是是通过event和当前的state得到下一个state，即event+state=nextstate。更多关于DFA算法的了解可上网学习。
+# tagmatch
+>文本关键词匹配程序,一般的匹配方式。
 
 ### 使用场景
 ```
-v1.1.0
+v1.0.0
 文本中匹配指定词组，替换为带链接的标签
 
 ```
@@ -16,11 +13,11 @@ v1.1.0
 1、引入包
 
 ```php
-composer require git-mz/tkmatch
+composer require git-mz/tagmatch
 ```
 2、调用
 ```php
-use tkmatch\main;
+use tagmatch\main;
 
 $main    = new Main();
 $content = '我会脚踏云朵，哦不，是七彩云朵去娶你！';
@@ -32,17 +29,17 @@ $tags = [
 // 获取匹配到的tags
 $res = $main::init()
      ->setTree($tags)
-     ->getTagWord($content, $wordNum = 0);
+     ->getTagWord($content);
 
 // 替换匹配到的tags
 $res = $main::init()
      ->setTree($tags)
-     ->replace($content, $newclass = '', $replaceOne = 0);
+     ->replace($content, $newclass = '');
 
 ```
 3、方法说明
 ```php
-v1.1.0
+v1.0.0
     getTagWord(String content, Int wordNum)
     //获取文本中匹配到的标签
     replace(String content, String newclass, Int replaceOne)
